@@ -76,11 +76,12 @@ abstract class AbstractDataHandler
      * @param string $table : The name of the table the data should be saved to
      * @param integer $uidPid : The uid of the record or page we are currently working on
      * @param DataHandler $dataHandler
+     * @param boolean $pidOfNewCreatedRecordIsAlreadyDetermined
      */
-    public function init($table, $uidPid, DataHandler $dataHandler)
+    public function init($table, $uidPid, DataHandler $dataHandler, $pidOfNewCreatedRecordIsAlreadyDetermined = false)
     {
         $this->setTable($table);
-        if ($table === 'tt_content') {
+        if ($table === 'tt_content' && $pidOfNewCreatedRecordIsAlreadyDetermined === false) {
             $uidPid = Helper::getInstance()->getPidFromUid($uidPid);
         }
         $this->setPageUid($uidPid);

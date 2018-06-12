@@ -61,7 +61,13 @@ class PreProcessFieldArray extends AbstractDataHandler
     public function execute_preProcessFieldArray(array &$fieldArray, $table, $id, DataHandler $parentObj)
     {
         if ($table === 'tt_content') {
-            $this->init($table, $id, $parentObj);
+            if (strpos($id, 'NEW') === 0 && array_key_exists('pid', $fieldArray) && false === empty($fieldArray['pid'])) {
+                $pid = (integer) $fieldArray['pid'];
+                $this->init($table, $pid, $parentObj, true);
+            } else {
+                $this->init($table, $id, $parentObj, false);
+            }
+
             if (!$this->getTceMain()->isImporting) {
                 $this->processFieldArrayForTtContent($fieldArray, $id);
             }
@@ -243,6 +249,8 @@ class PreProcessFieldArray extends AbstractDataHandler
             }
         }
         if (!empty($containerUpdateArray)) {
+            file_put_contents( '/var/log/congstar-congo/devbox/debug.log', "doGridContainerUpdate:".serialize($containerUpdateArray)."\n", FILE_APPEND);
+
             $this->doGridContainerUpdate($containerUpdateArray);
         }
         $this->setFieldEntriesForGridContainers($fieldArray);
