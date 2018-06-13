@@ -249,8 +249,6 @@ class PreProcessFieldArray extends AbstractDataHandler
             }
         }
         if (!empty($containerUpdateArray)) {
-            file_put_contents( '/var/log/congstar-congo/devbox/debug.log', "doGridContainerUpdate:".serialize($containerUpdateArray)."\n", FILE_APPEND);
-
             $this->doGridContainerUpdate($containerUpdateArray);
         }
         $this->setFieldEntriesForGridContainers($fieldArray);
